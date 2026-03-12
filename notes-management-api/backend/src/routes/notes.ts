@@ -11,7 +11,6 @@ import { authMiddleware } from '../middleware/auth.js';
 
 const router = Router();
 
-// All note routes require authentication
 router.use(authMiddleware);
 
 router.post('/', createNote);

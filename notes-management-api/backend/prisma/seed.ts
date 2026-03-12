@@ -4,7 +4,6 @@ import bcrypt from 'bcryptjs';
 const prisma = new PrismaClient();
 
 async function main() {
-  // Create admin user
   const hashedPassword = await bcrypt.hash('admin@123456', 10);
   
   const admin = await prisma.user.upsert({
@@ -18,7 +17,6 @@ async function main() {
     },
   });
 
-  // Create demo user
   const demoPassword = await bcrypt.hash('demo@123456', 10);
   
   const demoUser = await prisma.user.upsert({
@@ -32,7 +30,6 @@ async function main() {
     },
   });
 
-  // Create sample notes
   await prisma.note.create({
     data: {
       title: 'Welcome to Notes Management',

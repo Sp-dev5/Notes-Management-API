@@ -168,7 +168,6 @@ export async function searchNotes(
 ) {
   const skip = (page - 1) * limit;
   
-  // For SQLite, we use case-insensitive LIKE by default
   const whereCondition = {
     ...(isAdmin ? {} : { userId }),
     OR: [

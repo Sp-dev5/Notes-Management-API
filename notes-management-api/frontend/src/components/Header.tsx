@@ -16,7 +16,6 @@ export function Header({ onSearch }: HeaderProps) {
     const value = e.target.value;
     setSearchQuery(value);
 
-    // Debounce search
     if (searchTimeoutRef.current) {
       clearTimeout(searchTimeoutRef.current);
     }
@@ -28,7 +27,6 @@ export function Header({ onSearch }: HeaderProps) {
     }, 300);
   };
 
-  // Navigate to dashboard if authenticated, otherwise to landing page
   const logoPath = isAuthenticated ? '/dashboard' : '/';
 
   return (

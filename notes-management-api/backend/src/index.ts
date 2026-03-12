@@ -13,7 +13,6 @@ import swaggerJsdoc from 'swagger-jsdoc';
 
 const app: Express = express();
 
-// Swagger configuration
 const swaggerOptions = {
   definition: {
     openapi: '3.0.0',
@@ -44,7 +43,6 @@ const swaggerOptions = {
 
 const swaggerSpec = swaggerJsdoc(swaggerOptions);
 
-// Middleware
 app.use(cors({
   origin: config.frontendUrl,
   credentials: true,
@@ -55,16 +53,14 @@ app.use(express.urlencoded({ limit: '10mb', extended: true }));
 
 app.use(morgan('combined'));
 
-// Rate limiting (disabled in development)
 const loginLimiter = config.isDevelopment 
-  ? (req: any, res: any, next: any) => next() // Pass through in dev
+  ? (req: any, res: any, next: any) => next()
   : rateLimit({
-      windowMs: 15 * 60 * 1000, // 15 minutes
-      max: 5, // 5 requests per windowMs
+      windowMs: 15 * 60 * 1000,
+      max: 5,
       message: 'Too many login attempts, please try again later',
     });
 
-// Health check
 app.get('/health', (req, res) => {
   res.status(200).json({
     status: 'OK',
@@ -73,10 +69,8 @@ app.get('/health', (req, res) => {
   });
 });
 
-// Swagger documentation
 app.use('/api/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
-// API v1 routes
 const apiV1 = express.Router();
 
 apiV1.use('/auth', loginLimiter, authRoutes);
@@ -84,7 +78,6 @@ apiV1.use('/notes', notesRoutes);
 
 app.use('/api/v1', apiV1);
 
-// 404 handler
 app.use((req, res) => {
   res.status(404).json({
     success: false,
@@ -93,7 +86,6 @@ app.use((req, res) => {
   });
 });
 
-// Error handling
 app.use(errorHandler);
 
 export default app;
